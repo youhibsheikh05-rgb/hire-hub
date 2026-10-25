@@ -3,10 +3,10 @@ import { useContext } from 'react';
 import { AuthContext } from './context/AuthContext';
 import Home from './pages/Home';
 import Login from './pages/Login';
+import JobDetail from './pages/JobDetail'; // Naya Page Import kiya
 
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
-  
   return (
     <nav className="bg-white shadow-sm p-4 sticky top-0 z-10">
       <div className="max-w-6xl mx-auto flex justify-between items-center">
@@ -37,6 +37,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/jobs/:id" element={<JobDetail />} /> {/* Naya Route */}
         </Routes>
       </div>
     </Router>
