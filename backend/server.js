@@ -1,9 +1,14 @@
+import authRoutes from './src/routes/authRoutes.js';
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import connectDB from './src/config/db.js';
+import companyRoutes from './src/routes/companyRoutes.js';
+import jobRoutes from './src/routes/jobRoutes.js';
+import applicationRoutes from './src/routes/applicationRoutes.js';
+
 
 dotenv.config();
 
@@ -11,7 +16,7 @@ const app = express();
 
 // Middleware
 app.use(helmet());
-app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
+app.use(cors()); // Development ke liye sab allow kar diya
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
@@ -20,6 +25,11 @@ app.use(morgan('dev'));
 app.get('/', (req, res) => {
   res.json({ message: '🚀 HireHub API is running!', status: 'OK' });
 });
+
+app.use('/api/auth', authRoutes);
+app.use('/api/companies', companyRoutes);
+app.use('/api/jobs', jobRoutes);
+app.use('/api/applications', applicationRoutes);
 
 // Error handler
 app.use((err, req, res, next) => {
