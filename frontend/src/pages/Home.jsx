@@ -5,41 +5,94 @@ import { Link } from 'react-router-dom';
 const Home = () => {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
+  
+  // Filter states
+  const [keyword, setKeyword] = useState('');
+  const [location, setLocation] = useState('');
+  const [jobType, setJobType] = useState('');
+  const [minSalary, setMinSalary] = useState('');
 
+  const fetchJobs = async () => {
+    setLoading(true);
+    try {
+      // URL banayo query parameters ke sath
+      const query = new URLSearchParams();
+      if (keyword) query.append('keyword', keyword);
+      if (location) query.append('location', location);
+      if (jobType) query.append('jobType', jobType);
+      if (minSalary) query.append('minSalary', minSalary);
+
+      const response = await axios.get(`http://localhost:5000/api/jobs?${query.toString()}`);
+      setJobs(response.data.data);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching jobs:', error);
+      setLoading(false);
+    }
+  };
+
+  // Jab page pehli baar load ho
   useEffect(() => {
-    const fetchJobs = async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/api/jobs');
-        setJobs(response.data.data);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching jobs:', error);
-        setLoading(false);
-      }
-    };
     fetchJobs();
   }, []);
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+    fetchJobs();
+  };
+
   return (
     <>
-      {/* Hero Section */}
-      <header className="bg-white py-16 text-center px-4 border-b">
+      {/* Hero Section with Search */}
+      <header className="bg-white py-12 text-center px-4 border-b">
         <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">
           Find Your Dream Job
         </h1>
         <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-          Connecting Talent with Opportunity. Explore thousands of jobs and take the next step in your career.
+          Connecting Talent with Opportunity.
         </p>
+
+        {/* Search Form */}
+        <form onSubmit={handleSearch} className="max-w-4xl mx-auto bg-white p-4 rounded-xl shadow-md border flex flex-col md:flex-row gap-3">
+          <input 
+            type="text" 
+            placeholder="Job title, skills..." 
+            value={keyword}
+            onChange={(e) => setKeyword(e.target.value)}
+            className="flex-1 border p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+          <input 
+            type="text" 
+            placeholder="Location" 
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            className="w-full md:w-48 border p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+          <select 
+            value={jobType}
+            onChange={(e) => setJobType(e.target.value)}
+            className="w-full md:w-40 border p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-primary bg-white"
+          >
+            <option value="">All Types</option>
+            <option value="full-time">Full-time</option>
+            <option value="part-time">Part-time</option>
+            <option value="contract">Contract</option>
+            <option value="internship">Internship</option>
+          </select>
+          <button type="submit" className="bg-primary text-white px-6 py-2 rounded-md hover:bg-blue-700 transition font-medium">
+            Search
+          </button>
+        </form>
       </header>
 
       {/* Jobs List */}
       <main className="max-w-6xl mx-auto py-10 px-4">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6">Latest Jobs</h2>
+        <h2 className="text-2xl font-bold text-gray-800 mb-6">Latest Jobs ({jobs.length})</h2>
         
         {loading ? (
           <div className="text-center text-gray-500 text-xl">Loading jobs...</div>
         ) : jobs.length === 0 ? (
-          <div className="text-center text-gray-500">No jobs found.</div>
+          <div className="text-center text-gray-500 bg-white p-10 rounded-xl shadow-sm border">No jobs found matching your criteria.</div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {jobs.map((job) => (
@@ -50,7 +103,6 @@ const Home = () => {
                       {job.company?.name?.charAt(0) || 'C'}
                     </div>
                     <div>
-                      {/* Title par click karne se Job Detail page khulega */}
                       <Link to={`/jobs/${job._id}`}>
                         <h3 className="text-lg font-bold text-gray-900 hover:text-primary transition cursor-pointer">
                           {job.title}
@@ -72,8 +124,6 @@ const Home = () => {
                     ))}
                   </div>
                 </div>
-                
-                {/* Apply Now Button Link ke roop mein */}
                 <Link 
                   to={`/jobs/${job._id}`} 
                   className="block w-full text-center bg-primary text-white py-2 rounded-md hover:bg-blue-700 transition font-medium"

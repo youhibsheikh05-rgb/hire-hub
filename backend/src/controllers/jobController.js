@@ -27,16 +27,21 @@ export const createJob = async (req, res, next) => {
 // @route   GET /api/jobs
 export const getJobs = async (req, res, next) => {
   try {
-    const { keyword, location, jobType, experienceLevel } = req.query;
+    const { keyword, location, jobType, experienceLevel, minSalary } = req.query;
     let query = { status: 'open' };
 
-    // Search by keyword (text index)
     if (keyword) {
-      query.$text = { $search: keyword };
+      // Title, description, ya skills mein dhoondo
+      query.$or = [
+        { title: { $regex: keyword, $options: 'i' } },
+        { description: { $regex: keyword, $options: 'i' } },
+        { skills: { $regex: keyword, $options: 'i' } }
+      ];
     }
     if (location) query.location = { $regex: location, $options: 'i' };
     if (jobType) query.jobType = jobType;
     if (experienceLevel) query.experienceLevel = experienceLevel;
+    if (minSalary) query['salary.min'] = { $gte: Number(minSalary) };
 
     const jobs = await Job.find(query)
       .populate('company', 'name logo location')
