@@ -5,22 +5,17 @@ import { Link } from 'react-router-dom';
 const Home = () => {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
-  
-  // Filter states
   const [keyword, setKeyword] = useState('');
   const [location, setLocation] = useState('');
   const [jobType, setJobType] = useState('');
-  const [minSalary, setMinSalary] = useState('');
 
   const fetchJobs = async () => {
     setLoading(true);
     try {
-      // URL banayo query parameters ke sath
       const query = new URLSearchParams();
       if (keyword) query.append('keyword', keyword);
       if (location) query.append('location', location);
       if (jobType) query.append('jobType', jobType);
-      if (minSalary) query.append('minSalary', minSalary);
 
       const response = await axios.get(`http://localhost:5000/api/jobs?${query.toString()}`);
       setJobs(response.data.data);
@@ -31,7 +26,6 @@ const Home = () => {
     }
   };
 
-  // Jab page pehli baar load ho
   useEffect(() => {
     fetchJobs();
   }, []);
@@ -43,7 +37,6 @@ const Home = () => {
 
   return (
     <>
-      {/* Hero Section with Search */}
       <header className="bg-white py-12 text-center px-4 border-b">
         <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">
           Find Your Dream Job
@@ -52,7 +45,6 @@ const Home = () => {
           Connecting Talent with Opportunity.
         </p>
 
-        {/* Search Form */}
         <form onSubmit={handleSearch} className="max-w-4xl mx-auto bg-white p-4 rounded-xl shadow-md border flex flex-col md:flex-row gap-3">
           <input 
             type="text" 
@@ -85,7 +77,6 @@ const Home = () => {
         </form>
       </header>
 
-      {/* Jobs List */}
       <main className="max-w-6xl mx-auto py-10 px-4">
         <h2 className="text-2xl font-bold text-gray-800 mb-6">Latest Jobs ({jobs.length})</h2>
         
@@ -108,7 +99,9 @@ const Home = () => {
                           {job.title}
                         </h3>
                       </Link>
-                      <p className="text-sm text-gray-500">{job.company?.name}</p>
+                      <Link to={`/companies/${job.company?._id}`} className="text-sm text-primary hover:underline">
+                        {job.company?.name}
+                      </Link>
                     </div>
                   </div>
                   <div className="space-y-2 mb-4 text-sm text-gray-600">

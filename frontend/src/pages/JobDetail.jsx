@@ -1,17 +1,16 @@
 import { useEffect, useState, useContext } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 
 const JobDetail = () => {
-  const { id } = useParams(); // URL se job ID nikalna
+  const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
   
   const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
   
-  // Apply Modal ke liye states
   const [showModal, setShowModal] = useState(false);
   const [resume, setResume] = useState('');
   const [coverLetter, setCoverLetter] = useState('');
@@ -61,7 +60,11 @@ const JobDetail = () => {
         <div className="flex justify-between items-start mb-6">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">{job.title}</h1>
-            <p className="text-lg text-gray-600 mt-1">{job.company?.name} • {job.location}</p>
+            {/* Company ka link lagaya */}
+            <Link to={`/companies/${job.company?._id}`} className="text-lg text-primary hover:underline mt-1 block">
+              {job.company?.name}
+            </Link>
+            <p className="text-gray-600 mt-1">{job.location}</p>
           </div>
           <button 
             onClick={() => setShowModal(true)}
@@ -95,7 +98,6 @@ const JobDetail = () => {
         </div>
       </div>
 
-      {/* Apply Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white p-6 rounded-xl shadow-lg max-w-md w-full">
