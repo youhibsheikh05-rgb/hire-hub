@@ -8,7 +8,7 @@ import RecruiterDashboard from './pages/RecruiterDashboard';
 import PostJob from './pages/PostJob';
 import CompanySetup from './pages/CompanySetup';
 import ViewApplicants from './pages/ViewApplicants';
-
+import MyApplications from './pages/MyApplications'; // Naya import
 
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
@@ -20,12 +20,20 @@ const Navbar = () => {
         <div className="space-x-4 flex items-center">
           {user ? (
             <>
-              {/* Recruiter ke liye Dashboard ka link */}
+              {/* Recruiter ka Dashboard */}
               {user.role === 'recruiter' && (
                 <Link to="/recruiter/dashboard" className="text-gray-700 font-medium hover:text-primary">
                   Dashboard
                 </Link>
               )}
+              
+              {/* Candidate ki Applications */}
+              {user.role === 'candidate' && (
+                <Link to="/candidate/applications" className="text-gray-700 font-medium hover:text-primary">
+                  My Applications
+                </Link>
+              )}
+
               <span className="text-gray-700 font-medium">Hi, {user.name}</span>
               <button onClick={logout} className="text-red-500 hover:text-red-700 font-medium">Logout</button>
             </>
@@ -47,13 +55,14 @@ function App() {
       <div className="min-h-screen bg-gray-50 font-sans">
         <Navbar />
         <Routes>
-          <Route path="/recruiter/setup-company" element={<CompanySetup />} />
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/jobs/:id" element={<JobDetail />} />
           <Route path="/recruiter/dashboard" element={<RecruiterDashboard />} />
           <Route path="/recruiter/post-job" element={<PostJob />} />
+          <Route path="/recruiter/setup-company" element={<CompanySetup />} />
           <Route path="/recruiter/applicants/:jobId" element={<ViewApplicants />} />
+          <Route path="/candidate/applications" element={<MyApplications />} /> {/* Naya route */}
         </Routes>
       </div>
     </Router>
