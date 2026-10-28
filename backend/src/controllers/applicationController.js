@@ -75,4 +75,30 @@ export const getJobApplicants = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+};  
+
+
+// @desc    Update application status (Recruiter)
+// @route   PUT /api/applications/:id/status
+export const updateApplicationStatus = async (req, res, next) => {
+  try {
+    const { status } = req.body;
+    const application = await Application.findById(req.params.id).populate('job');
+
+    if (!application) {
+      return res.status(404).json({ success: false, message: 'Application not found' });
+    }
+
+    // Check if recruiter owns the job
+    if (application.job.createdBy.toString() !== req.user.id) {
+      return res.status(403).json({ success: false, message: 'Not authorized' });
+    }
+
+    application.status = status;
+    await application.save();
+
+    res.status(200).json({ success: true, data: application, message: 'Status updated' });
+  } catch (error) {
+    next(error);
+  }
 };

@@ -7,7 +7,7 @@ import JobDetail from './pages/JobDetail';
 import RecruiterDashboard from './pages/RecruiterDashboard';
 import PostJob from './pages/PostJob';
 import CompanySetup from './pages/CompanySetup';
-
+import ViewApplicants from './pages/ViewApplicants';
 
 
 const Navbar = () => {
@@ -53,6 +53,7 @@ function App() {
           <Route path="/jobs/:id" element={<JobDetail />} />
           <Route path="/recruiter/dashboard" element={<RecruiterDashboard />} />
           <Route path="/recruiter/post-job" element={<PostJob />} />
+          <Route path="/recruiter/applicants/:jobId" element={<ViewApplicants />} />
         </Routes>
       </div>
     </Router>

@@ -13,7 +13,7 @@ const RecruiterDashboard = () => {
     const checkCompanyAndFetchJobs = async () => {
       try {
         const config = { headers: { Authorization: `Bearer ${user.token}` } };
-        
+
         // Pehle check karo company hai ya nahi
         try {
           await axios.get('http://localhost:5000/api/companies/my', config);
@@ -41,8 +41,8 @@ const RecruiterDashboard = () => {
     <div className="max-w-6xl mx-auto py-10 px-4">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold text-gray-800">Recruiter Dashboard</h1>
-        <Link 
-          to="/recruiter/post-job" 
+        <Link
+          to="/recruiter/post-job"
           className="bg-primary text-white px-6 py-2 rounded-md hover:bg-blue-700 transition font-medium"
         >
           + Post New Job
@@ -66,6 +66,7 @@ const RecruiterDashboard = () => {
                 <th className="p-4 border-b">Location</th>
                 <th className="p-4 border-b">Status</th>
                 <th className="p-4 border-b">Views</th>
+                <th className="p-4 border-b">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -73,6 +74,14 @@ const RecruiterDashboard = () => {
                 <tr key={job._id} className="hover:bg-gray-50">
                   <td className="p-4 border-b font-medium text-gray-900">{job.title}</td>
                   <td className="p-4 border-b text-gray-600">{job.location}</td>
+                  <td className="p-4 border-b">
+                    <Link
+                      to={`/recruiter/applicants/${job._id}`}
+                      className="text-primary hover:underline font-medium"
+                    >
+                      View Applicants
+                    </Link>
+                  </td>
                   <td className="p-4 border-b">
                     <span className="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-bold uppercase">
                       {job.status}
