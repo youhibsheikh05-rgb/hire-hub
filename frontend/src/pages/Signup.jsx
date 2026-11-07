@@ -17,7 +17,7 @@ const Signup = () => {
     e.preventDefault();
     try {
       // 1. Pehle user banao
-      const { data } = await axios.post('http://localhost:5000/api/auth/signup', { name, email, password, role });
+      const { data } = await axios.post('/api/auth/signup', { name, email, password, role });
       
       // 2. Signup ke baad seedha login karwa do
       await login(data.data.email, password); 

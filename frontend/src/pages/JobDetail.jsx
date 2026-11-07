@@ -19,7 +19,7 @@ const JobDetail = () => {
   useEffect(() => {
     const fetchJob = async () => {
       try {
-        const { data } = await axios.get(`http://localhost:5000/api/jobs/${id}`);
+        const { data } = await axios.get(`/api/jobs/${id}`);
         setJob(data.data);
         setLoading(false);
       } catch (error) {
@@ -40,7 +40,7 @@ const JobDetail = () => {
 
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      await axios.post('http://localhost:5000/api/applications', 
+      await axios.post('/api/applications', 
         { jobId: job._id, resume, coverLetter }, 
         config
       );

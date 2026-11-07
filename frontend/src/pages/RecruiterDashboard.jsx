@@ -16,7 +16,7 @@ const RecruiterDashboard = () => {
 
         // Pehle check karo company hai ya nahi
         try {
-          await axios.get('http://localhost:5000/api/companies/my', config);
+          await axios.get('/api/companies/my', config);
         } catch (err) {
           // Agar company nahi hai (404), toh setup page par bhejo
           if (err.response?.status === 404) {
@@ -26,7 +26,7 @@ const RecruiterDashboard = () => {
         }
 
         // Company hai, toh jobs fetch karo
-        const { data } = await axios.get('http://localhost:5000/api/jobs/my-jobs', config);
+        const { data } = await axios.get('/api/jobs/my-jobs', config);
         setJobs(data.data);
         setLoading(false);
       } catch (error) {

@@ -11,9 +11,9 @@ const CompanyProfile = () => {
   useEffect(() => {
     const fetchCompanyData = async () => {
       try {
-        const { data: companyData } = await axios.get(`http://localhost:5000/api/companies/${id}`);
+        const { data: companyData } = await axios.get(`/api/companies/${id}`);
         setCompany(companyData.data);
-        const { data: jobsData } = await axios.get(`http://localhost:5000/api/jobs`);
+        const { data: jobsData } = await axios.get(`/api/jobs`);
         const filteredJobs = jobsData.data.filter(job => job.company?._id === id);
         setJobs(filteredJobs);
         setLoading(false);

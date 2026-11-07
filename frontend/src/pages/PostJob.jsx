@@ -33,7 +33,7 @@ const PostJob = () => {
         skills: formData.skills.split(',').map(s => s.trim()),
         requirements: ['Check description'],
       };
-      await axios.post('http://localhost:5000/api/jobs', jobData, config);
+      await axios.post('/api/jobs', jobData, config);
       navigate('/recruiter/dashboard');
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to post job');

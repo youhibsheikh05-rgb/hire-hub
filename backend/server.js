@@ -9,17 +9,27 @@ import companyRoutes from './src/routes/companyRoutes.js';
 import jobRoutes from './src/routes/jobRoutes.js';
 import applicationRoutes from './src/routes/applicationRoutes.js';
 
-
 dotenv.config();
 
 const app = express();
 
 // Middleware
 app.use(helmet());
-app.use(cors()); // Development ke liye sab allow kar diya
+app.use(cors()); 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
+
+// Database connection ensure karo har request se pehle
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (error) {
+    console.error('DB Connection Error:', error);
+    res.status(500).json({ message: 'Database connection failed' });
+  }
+});
 
 // Health check
 app.get('/', (req, res) => {
@@ -40,18 +50,4 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Start
-const PORT = process.env.PORT || 5000;
-
-const startServer = async () => {
-  try {
-    await connectDB();
-    app.listen(PORT, () => {
-      console.log(`🚀 Server running on http://localhost:${PORT}`);
-    });
-  } catch (error) {
-    console.error('❌ Failed to start:', error.message);
-  }
-};
-
-startServer();
+export default app;

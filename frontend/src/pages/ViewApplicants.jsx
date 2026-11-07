@@ -17,7 +17,7 @@ const ViewApplicants = () => {
         
         const config = { headers: { Authorization: `Bearer ${user.token}` } };
         // Yahan URL check karo
-        const { data } = await axios.get(`http://localhost:5000/api/applications/job/${jobId}`, config);
+        const { data } = await axios.get(`/api/applications/job/${jobId}`, config);
         
         setApplications(data.data);
         setLoading(false);
@@ -36,7 +36,7 @@ const ViewApplicants = () => {
   const updateStatus = async (appId, newStatus) => {
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      await axios.put(`http://localhost:5000/api/applications/${appId}/status`, { status: newStatus }, config);
+      await axios.put(`/api/applications/${appId}/status`, { status: newStatus }, config);
       setApplications(applications.map(app => app._id === appId ? { ...app, status: newStatus } : app));
     } catch (err) {
       alert('Failed to update status');

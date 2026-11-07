@@ -17,7 +17,7 @@ const Home = () => {
       if (location) query.append('location', location);
       if (jobType) query.append('jobType', jobType);
 
-      const response = await axios.get(`http://localhost:5000/api/jobs?${query.toString()}`);
+      const response = await axios.get(`/api/jobs?${query.toString()}`);
       setJobs(response.data.data);
       setLoading(false);
     } catch (error) {
@@ -37,9 +37,8 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Premium Hero Section with Gradient */}
+      {/* Premium Hero Section */}
       <header className="relative bg-gradient-to-br from-blue-700 via-blue-600 to-indigo-800 py-24 text-center px-4 overflow-hidden">
-        {/* Background Design Elements */}
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 opacity-20">
           <div className="absolute -top-10 -left-10 w-40 h-40 bg-white rounded-full mix-blend-overlay filter blur-3xl"></div>
           <div className="absolute top-20 right-10 w-60 h-60 bg-purple-300 rounded-full mix-blend-overlay filter blur-3xl"></div>
@@ -54,7 +53,6 @@ const Home = () => {
             Discover thousands of job opportunities with top companies. Your next big career move is just a click away.
           </p>
 
-          {/* Glassmorphism Search Box */}
           <form onSubmit={handleSearch} className="max-w-4xl mx-auto bg-white/10 backdrop-blur-md p-3 rounded-2xl shadow-2xl border border-white/20 flex flex-col md:flex-row gap-3">
             <input 
               type="text" 
@@ -111,13 +109,15 @@ const Home = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {jobs.map((job) => (
               <div key={job._id} className="group bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl border border-gray-100 transition-all duration-300 flex flex-col justify-between relative overflow-hidden">
-                {/* Top Accent Line on Hover */}
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 
                 <div>
                   <div className="flex items-center space-x-4 mb-5">
-                    <div className="w-14 h-14 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl flex items-center justify-center text-primary font-extrabold text-2xl shadow-inner">
-                      {job.company?.name?.charAt(0) || 'C'}
+                    {/* YAHAN NAYA PROFESSIONAL ICON LAGA HAI */}
+                    <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-md">
+                      <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                      </svg>
                     </div>
                     <div>
                       <Link to={`/jobs/${job._id}`}>

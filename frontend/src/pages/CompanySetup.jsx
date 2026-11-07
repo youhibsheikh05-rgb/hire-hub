@@ -18,7 +18,7 @@ const CompanySetup = () => {
     e.preventDefault();
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      await axios.post('http://localhost:5000/api/companies', formData, config);
+      await axios.post('/api/companies', formData, config);
       alert('Company Profile Created Successfully! 🎉');
       navigate('/recruiter/dashboard');
     } catch (err) {
